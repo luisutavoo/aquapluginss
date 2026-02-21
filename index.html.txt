@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQUA PLUGINS - Plugins Premium Minecraft</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=BRL"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        :root{--laranja:#ff6b00;--laranja-claro:#ff8533;--preto:#0a0a0a;--preto-claro:#1a1a1a;--preto-medio:#2a2a2a;--branco:#fff;--cinza:#888;--sucesso:#00c851;--pix:#32bcad;--paypal:#0070ba;--whatsapp:#25d366}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Roboto',sans-serif;background:var(--preto);color:var(--branco);line-height:1.6}
+        h1,h2,h3{font-family:'Rajdhani',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+        .top-bar{background:var(--laranja);color:var(--preto);text-align:center;padding:8px;font-size:12px;font-weight:600;text-transform:uppercase}
+        header{background:var(--preto-claro);border-bottom:3px solid var(--laranja);position:sticky;top:0;z-index:1000}
+        .header-container{max-width:1200px;margin:0 auto;padding:15px 20px;display:flex;justify-content:space-between;align-items:center}
+        .logo{font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:700;color:var(--branco);text-decoration:none}
+        .logo span{color:var(--laranja);display:block;font-size:12px;letter-spacing:3px;margin-top:-5px}
+        nav ul{display:flex;list-style:none;gap:30px}
+        nav a{color:var(--branco);text-decoration:none;font-weight:500;font-size:14px;text-transform:uppercase;transition:color .3s}
+        nav a:hover{color:var(--laranja)}
+        .btn-carrinho{background:var(--laranja);color:var(--preto);border:none;padding:12px 20px;border-radius:6px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:14px;text-transform:uppercase;transition:all .3s;position:relative}
+        .btn-carrinho:hover{background:var(--laranja-claro);transform:translateY(-2px)}
+        .contador-carrinho{position:absolute;top:-8px;right:-8px;background:var(--branco);color:var(--preto);font-size:11px;font-weight:800;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--laranja)}
+        .hero{background:linear-gradient(135deg,var(--preto-claro),var(--preto));padding:80px 20px;text-align:center}
+        .hero h1{font-size:56px;margin-bottom:20px}.hero .highlight{color:var(--laranja);display:block}
+        .hero p{color:var(--cinza);font-size:18px;margin-bottom:30px;max-width:600px;margin-left:auto;margin-right:auto}
+        .produtos-section{padding:60px 20px;max-width:1200px;margin:0 auto}
+        .section-title{font-size:36px;text-align:center;margin-bottom:10px}.section-title::after{content:'';display:block;width:60px;height:4px;background:var(--laranja);margin:10px auto 0}
+        .section-subtitle{text-align:center;color:var(--cinza);margin-bottom:40px}
+        .filtros{display:flex;justify-content:center;gap:10px;margin-bottom:40px;flex-wrap:wrap}
+        .filtro-btn{background:var(--preto-claro);border:2px solid var(--preto-medio);color:var(--cinza);padding:10px 25px;border-radius:6px;cursor:pointer;font-weight:600;text-transform:uppercase;font-size:13px;transition:all .3s}
+        .filtro-btn:hover,.filtro-btn.active{background:var(--laranja);border-color:var(--laranja);color:var(--preto)}
+        .produtos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:25px}
+        .produto-card{background:var(--preto-claro);border:2px solid var(--preto-medio);border-radius:12px;overflow:hidden;transition:all .3s;position:relative}
+        .produto-card:hover{border-color:var(--laranja);transform:translateY(-5px);box-shadow:0 15px 40px rgba(255,107,0,.2)}
+        .produto-tag{position:absolute;top:15px;left:15px;background:var(--laranja);color:var(--preto);padding:5px 12px;border-radius:4px;font-size:11px;font-weight:800;text-transform:uppercase;z-index:2}
+        .produto-tag.tag-novo{background:var(--sucesso)}.produto-tag.tag-premium{background:#ff3333;color:var(--branco)}
+        .produto-imagem{height:180px;background:linear-gradient(135deg,var(--preto-medio),var(--preto));display:flex;align-items:center;justify-content:center;font-size:64px}
+        .produto-info{padding:20px}.produto-categoria{color:var(--laranja);font-size:12px;font-weight:700;text-transform:uppercase;margin-bottom:8px}
+        .produto-nome{font-size:22px;font-weight:700;margin-bottom:10px}.produto-descricao{color:var(--cinza);font-size:14px;line-height:1.5;margin-bottom:15px;height:63px;overflow:hidden}
+        .produto-stats{display:flex;gap:15px;margin-bottom:15px;font-size:13px;color:var(--cinza)}.produto-stats i{color:var(--laranja);margin-right:5px}
+        .produto-footer{display:flex;justify-content:space-between;align-items:center;padding-top:15px;border-top:1px solid var(--preto-medio)}
+        .preco-antigo{text-decoration:line-through;color:var(--cinza);font-size:13px}.preco-atual{font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:700;color:var(--laranja)}
+        .btn-comprar{background:var(--laranja);color:var(--preto);border:none;padding:12px 24px;border-radius:6px;font-weight:700;cursor:pointer;text-transform:uppercase;font-size:13px;transition:all .3s}
+        .btn-comprar:hover{background:var(--laranja-claro);transform:scale(1.05)}
+        .carrinho-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:1998;opacity:0;visibility:hidden;transition:all .3s}.carrinho-overlay.open{opacity:1;visibility:visible}
+        .carrinho-sidebar{position:fixed;top:0;right:-450px;width:450px;height:100%;background:var(--preto-claro);border-left:3px solid var(--laranja);z-index:1999;transition:right .3s;display:flex;flex-direction:column}.carrinho-sidebar.open{right:0}
+        .carrinho-header{background:var(--preto);padding:25px;border-bottom:2px solid var(--laranja);display:flex;justify-content:space-between;align-items:center}.carrinho-header h2{font-size:24px;display:flex;align-items:center;gap:10px}.carrinho-header h2 i{color:var(--laranja)}
+        .fechar-carrinho{background:none;border:none;color:var(--cinza);font-size:24px;cursor:pointer}.carrinho-itens{flex:1;overflow-y:auto;padding:20px}.carrinho-vazio{text-align:center;padding:60px 20px;color:var(--cinza)}.carrinho-vazio i{font-size:64px;margin-bottom:20px;opacity:.3}
+        .carrinho-item{display:flex;gap:15px;padding:20px;background:var(--preto);border-radius:8px;margin-bottom:15px;border:1px solid var(--preto-medio)}.carrinho-item-imagem{width:70px;height:70px;background:var(--preto-medio);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:32px}.carrinho-item-info{flex:1}.carrinho-item-nome{font-size:18px;font-weight:700;margin-bottom:5px}.carrinho-item-preco{color:var(--laranja);font-weight:700;font-size:16px}.remover-item{background:none;border:none;color:#ff4444;cursor:pointer;font-size:18px}
+        .carrinho-footer{background:var(--preto);padding:25px;border-top:2px solid var(--laranja)}.carrinho-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;font-size:18px}.carrinho-total span:last-child{font-family:'Rajdhani',sans-serif;font-size:32px;font-weight:700;color:var(--laranja)}
+        .btn-finalizar{width:100%;background:var(--laranja);color:var(--preto);border:none;padding:18px;border-radius:8px;font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;cursor:pointer;transition:all .3s}.btn-finalizar:hover{background:var(--laranja-claro)}.btn-finalizar:disabled{background:var(--preto-medio);color:var(--cinza);cursor:not-allowed}
+        .checkout-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .3s}.checkout-modal.open{opacity:1;visibility:visible}
+        .checkout-container{background:var(--preto-claro);border:3px solid var(--laranja);border-radius:12px;width:90%;max-width:600px;max-height:90vh;overflow-y:auto}.checkout-header{background:var(--preto);padding:25px;border-bottom:2px solid var(--laranja);display:flex;justify-content:space-between;align-items:center}.checkout-header h2{font-size:24px}.fechar-checkout{background:none;border:none;color:var(--cinza);font-size:24px;cursor:pointer}.checkout-content{padding:30px}.checkout-resumo{background:var(--preto);padding:20px;border-radius:8px;margin-bottom:25px}.checkout-resumo h3{font-size:18px;margin-bottom:15px;color:var(--laranja)}.checkout-item{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--preto-medio);font-size:14px}.checkout-total{display:flex;justify-content:space-between;padding-top:15px;margin-top:15px;border-top:2px solid var(--laranja);font-family:'Rajdhani',sans-serif;font-size:24px;font-weight:700}.checkout-total span:last-child{color:var(--laranja)}
+        .form-group{margin-bottom:20px}.form-group label{display:block;margin-bottom:8px;font-weight:600;font-size:14px;text-transform:uppercase}.form-group input{width:100%;padding:15px;background:var(--preto);border:2px solid var(--preto-medio);border-radius:6px;color:var(--branco);font-size:16px}.form-group input:focus{outline:none;border-color:var(--laranja)}
+        .payment-tabs{display:flex;gap:10px;margin-bottom:20px;border-bottom:2px solid var(--preto-medio)}.payment-tab{flex:1;padding:15px;background:var(--preto);border:2px solid var(--preto-medio);border-bottom:none;border-radius:8px 8px 0 0;color:var(--cinza);cursor:pointer;font-weight:600;text-align:center;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:8px}.payment-tab.active{background:var(--laranja);border-color:var(--laranja);color:var(--preto)}.payment-content{display:none;padding:20px;background:var(--preto);border-radius:0 0 8px 8px;border:2px solid var(--preto-medio);border-top:none}.payment-content.active{display:block}
+        .pix-container{text-align:center;padding:20px}.pix-qrcode{width:200px;height:200px;background:var(--branco);margin:0 auto 20px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:10px}.pix-code{background:var(--preto-claro);padding:15px;border-radius:6px;font-family:monospace;font-size:11px;word-break:break-all;margin-bottom:15px;border:1px solid var(--preto-medio);color:var(--cinza)}.btn-copiar{background:var(--pix);color:var(--preto);border:none;padding:12px 30px;border-radius:6px;font-weight:700;cursor:pointer;text-transform:uppercase;transition:all .3s;margin-right:10px}.btn-copiar:hover{background:#2aa89a}.btn-whatsapp{background:var(--whatsapp);color:var(--branco);border:none;padding:12px 30px;border-radius:6px;font-weight:700;cursor:pointer;text-transform:uppercase;transition:all .3s}.btn-whatsapp:hover{background:#128c7e}.pix-status{margin-top:15px;padding:10px;border-radius:6px;font-size:14px;font-weight:600}.pix-status.aguardando{background:#332200;color:var(--laranja)}.pix-status.pago{background:#003311;color:var(--sucesso)}.pix-info{background:var(--preto-claro);padding:15px;border-radius:6px;margin-top:15px;font-size:13px;color:var(--cinza);border-left:3px solid var(--whatsapp)}
+        #paypal-button-container{display:flex;justify-content:center;min-height:45px}
+        .features{background:var(--preto-claro);padding:60px 20px;border-top:3px solid var(--laranja);border-bottom:3px solid var(--laranja)}.features-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px}.feature-box{text-align:center;padding:30px}.feature-icon{width:70px;height:70px;background:var(--preto);border:2px solid var(--laranja);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:28px;color:var(--laranja)}.feature-box h3{font-size:20px;margin-bottom:10px}.feature-box p{color:var(--cinza);font-size:14px}
+        footer{background:var(--preto);padding:60px 20px 30px;border-top:3px solid var(--laranja)}.footer-content{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}.footer-brand p{color:var(--cinza);font-size:14px;line-height:1.8;margin:20px 0}.footer-social{display:flex;gap:15px}.footer-social a{width:40px;height:40px;background:var(--preto-claro);border:1px solid var(--preto-medio);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--cinza);transition:all .3s}.footer-social a:hover{background:var(--laranja);border-color:var(--laranja);color:var(--preto)}.footer-links h4{font-size:18px;margin-bottom:20px;color:var(--laranja)}.footer-links ul{list-style:none}.footer-links li{margin-bottom:12px}.footer-links a{color:var(--cinza);text-decoration:none;font-size:14px;transition:color .3s}.footer-links a:hover{color:var(--laranja)}.footer-bottom{max-width:1200px;margin:0 auto;padding-top:30px;border-top:1px solid var(--preto-medio);display:flex;justify-content:space-between;align-items:center;color:var(--cinza);font-size:13px}
+        .toast{position:fixed;bottom:30px;right:30px;background:var(--preto-claro);border:2px solid var(--laranja);border-left:5px solid var(--laranja);padding:20px 25px;border-radius:8px;display:flex;align-items:center;gap:15px;transform:translateX(150%);transition:transform .3s;z-index:3000}.toast.show{transform:translateX(0)}.toast i{color:var(--laranja);font-size:24px}
+        .sucesso-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.95);z-index:3001;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .3s}.sucesso-modal.open{opacity:1;visibility:visible}.sucesso-content{background:var(--preto-claro);border:3px solid var(--sucesso);border-radius:12px;padding:40px;text-align:center;max-width:500px;width:90%}.sucesso-content i{font-size:64px;color:var(--sucesso);margin-bottom:20px}.sucesso-content h2{font-size:32px;margin-bottom:15px;color:var(--sucesso)}.sucesso-content p{color:var(--cinza);margin-bottom:25px;line-height:1.6}.btn-download{background:var(--sucesso);color:var(--preto);border:none;padding:15px 40px;border-radius:6px;font-weight:700;cursor:pointer;text-transform:uppercase;font-size:16px;transition:all .3s;display:inline-flex;align-items:center;gap:10px}.btn-download:hover{background:#00a844;transform:scale(1.05)}
+        @media(max-width:768px){nav ul{display:none}.hero h1{font-size:36px}.carrinho-sidebar{width:100%;right:-100%}.checkout-container{width:95%;margin:20px}.payment-tabs{flex-direction:column}.payment-tab{border-radius:6px;border-bottom:2px solid var(--preto-medio)}.footer-content{grid-template-columns:1fr}.footer-bottom{flex-direction:column;gap:20px;text-align:center}}
+    </style>
+</head>
+<body>
+    <div class="top-bar">🎉 Use cupom AQUA10 e ganhe 10% OFF na primeira compra!</div>
+    
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">AQUA PLUGINS<span>PLUGINS PREMIUM</span></a>
+            <nav><ul><li><a href="#inicio">Início</a></li><li><a href="#produtos">Plugins</a></li><li><a href="#sobre">Sobre</a></li><li><a href="#suporte">Suporte</a></li></ul></nav>
+            <button class="btn-carrinho" onclick="toggleCarrinho()"><i class="fas fa-shopping-cart"></i>Carrinho<span class="contador-carrinho" id="contadorCarrinho">0</span></button>
+        </div>
+    </header>
+
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <h1>Plugins Premium<span class="highlight">Para Minecraft</span></h1>
+            <p>Transforme seu servidor com os melhores plugins. Código otimizado, suporte 24/7 e entrega imediata.</p>
+            <button class="btn-carrinho" style="padding:15px 40px;font-size:16px" onclick="document.getElementById('produtos').scrollIntoView({behavior:'smooth'})"><i class="fas fa-rocket"></i>Ver Plugins</button>
+        </div>
+    </section>
+
+    <section class="produtos-section" id="produtos">
+        <h2 class="section-title">Nossos Plugins</h2>
+        <p class="section-subtitle">Escolha o plugin perfeito para seu servidor</p>
+        <div class="filtros">
+            <button class="filtro-btn active" onclick="filtrar('todos')">Todos</button>
+            <button class="filtro-btn" onclick="filtrar('essentials')">Essentials</button>
+            <button class="filtro-btn" onclick="filtrar('economia')">Economia</button>
+            <button class="filtro-btn" onclick="filtrar('minigames')">Minigames</button>
+            <button class="filtro-btn" onclick="filtrar('gerenciamento')">Gerenciamento</button>
+        </div>
+        <div class="produtos-grid" id="produtosGrid"></div>
+    </section>
+
+    <section class="features">
+        <div class="features-grid">
+            <div class="feature-box"><div class="feature-icon"><i class="fas fa-download"></i></div><h3>Entrega Imediata</h3><p>Receba seu plugin instantaneamente após pagamento</p></div>
+            <div class="feature-box"><div class="feature-icon"><i class="fas fa-medal"></i></div><h3>Qualidade Garantida</h3><p>Plugins testados extensivamente antes do lançamento</p></div>
+            <div class="feature-box"><div class="feature-icon"><i class="fas fa-code"></i></div><h3>Código Limpo</h3><p>Desenvolvido para máxima performance</p></div>
+            <div class="feature-box"><div class="feature-icon"><i class="fas fa-undo"></i></div><h3>Garantia 7 Dias</h3><p>Não gostou? Devolvemos seu dinheiro</p></div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <a href="#" class="logo">AQUA PLUGINS<span>PLUGINS PREMIUM</span></a>
+                <p>A maior loja de plugins de Minecraft da América Latina. Comprometida com qualidade e segurança.</p>
+                <div class="footer-social"><a href="#"><i class="fab fa-discord"></i></a><a href="#"><i class="fab fa-whatsapp"></i></a><a href="#"><i class="fab fa-instagram"></i></a></div>
+            </div>
+            <div class="footer-links"><h4>Produtos</h4><ul><li><a href="#">Todos</a></li><li><a href="#">Mais Vendidos</a></li><li><a href="#">Promoções</a></li></ul></div>
+            <div class="footer-links"><h4>Suporte</h4><ul><li><a href="#">Central de Ajuda</a></li><li><a href="#">Documentação</a></li><li><a href="#">Contato</a></li></ul></div>
+            <div class="footer-links"><h4>Legal</h4><ul><li><a href="#">Termos</a></li><li><a href="#">Privacidade</a></li><li><a href="#">Reembolsos</a></li></ul></div>
+        </div>
+        <div class="footer-bottom"><p>&copy; 2026 AQUA PLUGINS - Todos os direitos reservados</p><div style="display:flex;gap:15px;align-items:center"><span style="color:var(--pix);font-weight:700">PIX</span><span style="color:var(--paypal);font-weight:700">PayPal</span></div></div>
+    </footer>
+
+    <div class="carrinho-overlay" id="carrinhoOverlay" onclick="toggleCarrinho()"></div>
+    <div class="carrinho-sidebar" id="carrinhoSidebar">
+        <div class="carrinho-header"><h2><i class="fas fa-shopping-cart"></i>Seu Carrinho</h2><button class="fechar-carrinho" onclick="toggleCarrinho()"><i class="fas fa-times"></i></button></div>
+        <div class="carrinho-itens" id="carrinhoItens"><div class="carrinho-vazio"><i class="fas fa-shopping-basket"></i><p>Carrinho vazio</p></div></div>
+        <div class="carrinho-footer"><div class="carrinho-total"><span>Total:</span><span id="carrinhoTotal">R$ 0,00</span></div><button class="btn-finalizar" id="btnFinalizar" onclick="abrirCheckout()" disabled><i class="fas fa-credit-card"></i>Finalizar Compra</button></div>
+    </div>
+
+    <div class="checkout-modal" id="checkoutModal">
+        <div class="checkout-container">
+            <div class="checkout-header"><h2><i class="fas fa-lock"></i>Finalizar Pagamento</h2><button class="fechar-checkout" onclick="fecharCheckout()"><i class="fas fa-times"></i></button></div>
+            <div class="checkout-content">
+                <div class="checkout-resumo"><h3>Resumo</h3><div id="checkoutItens"></div><div class="checkout-total"><span>Total:</span><span id="checkoutTotal">R$ 0,00</span></div></div>
+                <div class="form-group"><label>Email para recebimento</label><input type="email" id="emailCliente" placeholder="seu@email.com" required></div>
+                <div class="payment-tabs">
+                    <button class="payment-tab active" onclick="switchPayment('pix',this)"><i class="fas fa-qrcode"></i>PIX</button>
+                    <button class="payment-tab" onclick="switchPayment('paypal',this)"><i class="fab fa-paypal"></i>PayPal</button>
+                </div>
+                <div class="payment-content active" id="payment-pix">
+                    <div class="pix-container">
+                        <div class="pix-qrcode" id="pixQrcode"></div>
+                        <p style="color:var(--cinza);margin-bottom:15px;font-size:14px">Escaneie com seu app bancário</p>
+                        <div class="pix-code" id="pixCode"></div>
+                        <button class="btn-copiar" onclick="copiarPix()"><i class="fas fa-copy"></i>Copiar Código</button>
+                        <button class="btn-whatsapp" onclick="enviarComprovante()"><i class="fab fa-whatsapp"></i>Enviar Comprovante</button>
+                        <div class="pix-status aguardando" id="pixStatus"><i class="fas fa-clock"></i> Aguardando pagamento...</div>
+                        <div class="pix-info"><i class="fas fa-info-circle"></i> <strong>Como funciona:</strong><br>1. Escaneie o QR Code<br>2. Faça o pagamento<br>3. Clique em "Enviar Comprovante"<br>4. Assim que confirmarmos, liberamos seus plugins!</div>
+                    </div>
+                </div>
+                <div class="payment-content" id="payment-paypal"><div id="paypal-button-container"></div><p style="color:var(--cinza);margin-top:15px;font-size:13px;text-align:center">Pagamento internacional seguro</p></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sucesso-modal" id="sucessoModal">
+        <div class="sucesso-content">
+            <i class="fas fa-check-circle"></i>
+            <h2>Pagamento Confirmado!</h2>
+            <p>Seu pagamento foi aprovado. Os plugins foram enviados para seu email.</p>
+            <button class="btn-download" onclick="baixarPlugins()"><i class="fas fa-download"></i>Baixar Plugins</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMessage">Item adicionado!</span></div>
+
+    <script>
+        // ⚠️ CONFIGURE AQUI SEUS DADOS
+        const CONFIG = {
+            PIX_CHAVE: '44999890542',           // SUA CHAVE PIX (já está)
+            PIX_NOME: 'SEU NOME COMPLETO',       // ⬅️ MUDE PARA SEU NOME
+            PIX_CIDADE: 'SAO PAULO',             // ⬅️ MUDE PARA SUA CIDADE
+            WHATSAPP: '5544999890542',           // SEU WHATSAPP (já está)
+        };
+
+        const produtos = [
+            {id:1,nome:'AquaEssentials',categoria:'essentials',descricao:'Plugin core com comandos básicos, kits, proteção de spawn.',preco:39.90,precoAntigo:59.90,vendas:2150,avaliacao:5,icone:'⚙️',tag:'MAIS VENDIDO'},
+            {id:2,nome:'AquaLobby',categoria:'gerenciamento',descricao:'Sistema de lobby com NPCs, placares e proteção.',preco:49.90,precoAntigo:79.90,vendas:980,avaliacao:5,icone:'🎯',tag:null},
+            {id:3,nome:'AquaEconomy',categoria:'economia',descricao:'Sistema econômico com banco digital e transações P2P.',preco:44.90,precoAntigo:69.90,vendas:1850,avaliacao:4,icone:'💰',tag:null},
+            {id:4,nome:'AquaRankUP',categoria:'gerenciamento',descricao:'Progressão de ranks com requisitos e recompensas.',preco:59.90,precoAntigo:89.90,vendas:750,avaliacao:5,icone:'👑',tag:'NOVO'},
+            {id:5,nome:'AquaShop',categoria:'economia',descricao:'Lojas com NPCs, interface GUI e categorias.',preco:34.90,precoAntigo:54.90,vendas:1420,avaliacao:4,icone:'🏪',tag:null},
+            {id:6,nome:'AquaFazenda',categoria:'minigames',descricao:'Fazendas automáticas com plantações e animais.',preco:69.90,precoAntigo:99.90,vendas:680,avaliacao:5,icone:'🌾',tag:'HOT'},
+            {id:7,nome:'AquaSpawners',categoria:'gerenciamento',descricao:'Gerenciamento de spawners com upgrades.',preco:54.90,precoAntigo:84.90,vendas:920,avaliacao:4,icone:'🥚',tag:null},
+            {id:8,nome:'AquaMaquinas',categoria:'gerenciamento',descricao:'Máquinas automáticas de mineração.',preco:64.90,precoAntigo:94.90,vendas:580,avaliacao:5,icone:'⚡',tag:null},
+            {id:9,nome:'AquaTempoOnline',categoria:'gerenciamento',descricao:'Recompensas por tempo online e streaks.',preco:29.90,precoAntigo:49.90,vendas:1200,avaliacao:4,icone:'⏱️',tag:null},
+            {id:10,nome:'AquaCratesVirtuais',categoria:'minigames',descricao:'Caixas misteriosas com animações.',preco:49.90,precoAntigo:79.90,vendas:890,avaliacao:5,icone:'🎁',tag:null},
+            {id:11,nome:'AquaMinaPrivada',categoria:'minigames',descricao:'Minas privadas com resets automáticos.',preco:79.90,precoAntigo:119.90,vendas:430,avaliacao:5,icone:'⛏️',tag:'PREMIUM'}
+        ];
+
+        let carrinho = [], pedidoAtual = null;
+
+        document.addEventListener('DOMContentLoaded', () => { renderizar('todos'); atualizar(); });
+
+        function renderizar(filtro) {
+            const grid = document.getElementById('produtosGrid');
+            const filtrados = filtro === 'todos' ? produtos : produtos.filter(p => p.categoria === filtro);
+            grid.innerHTML = filtrados.map(p => `
+                <div class="produto-card">
+                    ${p.tag ? `<span class="produto-tag ${p.tag === 'NOVO' ? 'tag-novo' : p.tag === 'PREMIUM' ? 'tag-premium' : ''}">${p.tag}</span>` : ''}
+                    <div class="produto-imagem">${p.icone}</div>
+                    <div class="produto-info">
+                        <div class="produto-categoria">${p.categoria}</div>
+                        <h3 class="produto-nome">${p.nome}</h3>
+                        <p class="produto-descricao">${p.descricao}</p>
+                        <div class="produto-stats"><span><i class="fas fa-star"></i>${p.avaliacao}.0</span><span><i class="fas fa-download"></i>${p.vendas}</span></div>
+                        <div class="produto-footer">
+                            <div><div class="preco-antigo">R$ ${p.precoAntigo.toFixed(2)}</div><div class="preco-atual">R$ ${p.preco.toFixed(2)}</div></div>
+                            <button class="btn-comprar" onclick="adicionar(${p.id})"><i class="fas fa-cart-plus"></i>Comprar</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filtrar(cat) {
+            document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            renderizar(cat);
+        }
+
+        function adicionar(id) {
+            const p = produtos.find(x => x.id === id);
+            if (carrinho.find(x => x.id === id)) return toast('Item já no carrinho!', 'erro');
+            carrinho.push(p); atualizar(); toast(`${p.nome} adicionado!`);
+            const btn = event.target.closest('.btn-comprar');
+            btn.innerHTML = '<i class="fas fa-check"></i>Adicionado'; btn.style.background = 'var(--sucesso)';
+            setTimeout(() => { btn.innerHTML = '<i class="fas fa-cart-plus"></i>Comprar'; btn.style.background = ''; }, 2000);
+        }
+
+        function remover(id) { carrinho = carrinho.filter(x => x.id !== id); atualizar(); toast('Item removido'); }
+
+        function atualizar() {
+            document.getElementById('contadorCarrinho').textContent = carrinho.length;
+            const itens = document.getElementById('carrinhoItens');
+            const total = carrinho.reduce((s, i) => s + i.preco, 0);
+            if (carrinho.length === 0) {
+                itens.innerHTML = '<div class="carrinho-vazio"><i class="fas fa-shopping-basket"></i><p>Carrinho vazio</p></div>';
+                document.getElementById('btnFinalizar').disabled = true;
+            } else {
+                itens.innerHTML = carrinho.map(i => `
+                    <div class="carrinho-item">
+                        <div class="carrinho-item-imagem">${i.icone}</div>
+                        <div class="carrinho-item-info"><div class="carrinho-item-nome">${i.nome}</div><div class="carrinho-item-preco">R$ ${i.preco.toFixed(2)}</div></div>
+                        <button class="remover-item" onclick="remover(${i.id})"><i class="fas fa-trash"></i></button>
+                    </div>
+                `).join('');
+                document.getElementById('btnFinalizar').disabled = false;
+            }
+            document.getElementById('carrinhoTotal').textContent = `R$ ${total.toFixed(2)}`;
+        }
+
+        function toggleCarrinho() {
+            document.getElementById('carrinhoSidebar').classList.toggle('open');
+            document.getElementById('carrinhoOverlay').classList.toggle('open');
+        }
+
+        function abrirCheckout() {
+            if (carrinho.length === 0) return;
+            const total = carrinho.reduce((s, i) => s + i.preco, 0);
+            document.getElementById('checkoutItens').innerHTML = carrinho.map(i => `<div class="checkout-item"><span>${i.nome}</span><span>R$ ${i.preco.toFixed(2)}</span></div>`).join('');
+            document.getElementById('checkoutTotal').textContent = `R$ ${total.toFixed(2)}`;
+            document.getElementById('checkoutModal').classList.add('open');
+            gerarPix(total);
+            initPayPal();
+        }
+
+        function fecharCheckout() { document.getElementById('checkoutModal').classList.remove('open'); }
+
+        function switchPayment(metodo, btn) {
+            document.querySelectorAll('.payment-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.payment-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(`payment-${metodo}`).classList.add('active');
+            if (metodo === 'paypal') initPayPal();
+        }
+
+        // GERAR PIX VÁLIDO COM CRC16
+        function gerarPix(valor) {
+            const txid = 'AQUA' + Date.now().toString(36).toUpperCase();
+            const payload = construirPayload(CONFIG.PIX_CHAVE, CONFIG.PIX_NOME, CONFIG.PIX_CIDADE, valor, txid);
+            
+            document.getElementById('pixQrcode').innerHTML = '';
+            new QRCode(document.getElementById('pixQrcode'), {
+                text: payload, width: 180, height: 180, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.H
+            });
+            
+            document.getElementById('pixCode').textContent = payload;
+            pedidoAtual = { txid, valor, itens: [...carrinho], data: new Date().toISOString() };
+        }
+
+        function construirPayload(chave, nome, cidade, valor, txid) {
+            const valorStr = valor.toFixed(2);
+            const mai = '0014BR.GOV.BCB.PIX01' + String(chave.length).padStart(2, '0') + chave;
+            const maiFull = '26' + String(mai.length).padStart(2, '0') + mai;
+            
+            let payload = '000201' + maiFull + '52040000530398654' + String(valorStr.length).padStart(2, '0') + valorStr;
+            payload += '5802BR59' + String(nome.length).padStart(2, '0') + nome;
+            payload += '60' + String(cidade.length).padStart(2, '0') + cidade;
+            payload += '62' + String(4 + txid.length).padStart(2, '0') + '05' + String(txid.length).padStart(2, '0') + txid;
+            payload += '6304';
+            
+            // CRC16-CCITT-FALSE
+            let crc = 0xFFFF;
+            for (let i = 0; i < payload.length; i++) {
+                crc ^= payload.charCodeAt(i) << 8;
+                for (let j = 0; j < 8; j++) crc = (crc & 0x8000) ? ((crc << 1) ^ 0x1021) : (crc << 1);
+                crc &= 0xFFFF;
+            }
+            return payload + crc.toString(16).toUpperCase().padStart(4, '0');
+        }
+
+        function copiarPix() {
+            navigator.clipboard.writeText(document.getElementById('pixCode').textContent).then(() => toast('Código PIX copiado!'));
+        }
+
+        function enviarComprovante() {
+            const email = document.getElementById('emailCliente').value;
+            if (!email || !email.includes('@')) return toast('Digite seu email primeiro!', 'erro');
+            
+            const msg = `*COMPROVANTE - AQUA PLUGINS*%0A%0APedido: ${pedidoAtual.txid}%0AEmail: ${email}%0AValor: R$ ${pedidoAtual.valor.toFixed(2)}%0A%0APlugins:%0A${carrinho.map(i => `• ${i.nome}`).join('%0A')}%0A%0AEnvie o comprovante do pagamento!`;
+            window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=${msg}`, '_blank');
+            toast('WhatsApp aberto! Envie o comprovante.');
+        }
+
+        function initPayPal() {
+            if (document.getElementById('paypal-button-container').children.length > 0) return;
+            const total = carrinho.reduce((s, i) => s + i.preco, 0);
+            paypal.Buttons({
+                createOrder: (data, actions) => actions.order.create({
+                    purchase_units: [{amount: {currency_code: 'BRL', value: total.toFixed(2)}, description: `AQUA PLUGINS - ${carrinho.map(i => i.nome).join(', ')}`}]
+                }),
+                onApprove: (data, actions) => actions.order.capture().then(() => aprovar())
+            }).render('#paypal-button-container');
+        }
+
+        function aprovar() {
+            document.getElementById('pixStatus').innerHTML = '<i class="fas fa-check"></i> Pago!';
+            document.getElementById('pixStatus').className = 'pix-status pago';
+            setTimeout(() => { fecharCheckout(); toggleCarrinho(); document.getElementById('sucessoModal').classList.add('open'); }, 1500);
+        }
+
+        function baixarPlugins() {
+            const lista = carrinho.map(i => `- ${i.nome} (R$ ${i.preco.toFixed(2)})`).join('\\n');
+            const conteudo = `AQUA PLUGINS - COMPROVANTE\\n\\nData: ${new Date().toLocaleString()}\\nPedido: ${pedidoAtual?.txid || 'N/A'}\\n\\nPlugins:\\n${lista}\\n\\nTotal: R$ ${carrinho.reduce((s,i)=>s+i.preco,0).toFixed(2)}\\n\\nChave: AQUA-${Date.now()}`;
+            const blob = new Blob([conteudo], {type: 'text/plain'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = `AquaPlugins_${Date.now()}.txt`; a.click();
+            carrinho = []; atualizar(); document.getElementById('sucessoModal').classList.remove('open'); toast('Download iniciado!');
+        }
+
+        function toast(msg, tipo = 'sucesso') {
+            const t = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = msg;
+            t.querySelector('i').className = tipo === 'erro' ? 'fas fa-exclamation-circle' : 'fas fa-check-circle';
+            t.querySelector('i').style.color = tipo === 'erro' ? '#ff4444' : 'var(--laranja)';
+            t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000);
+        }
+    </script>
+</body>
+</html>
